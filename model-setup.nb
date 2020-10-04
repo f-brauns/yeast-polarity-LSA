@@ -1,0 +1,476 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     17824,        468]
+NotebookOptionsPosition[     15361,        420]
+NotebookOutlinePosition[     15736,        436]
+CellTagsIndexPosition[     15693,        433]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["Model with hard coded GEF enhancement by Bem1.", "Text",ExpressionUUID->"c3ff2945-6054-4ca4-8207-12d6b13aafe9"],
+
+Cell[CellGroupData[{
+
+Cell["Model equations", "Subsection",ExpressionUUID->"4f092f08-acfc-4f05-8670-07d0c26491ef"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"memVars", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "mt", ",", "md", ",", "mg", ",", "mtg", ",", "mb", ",", "mbf", ",", 
+     "mf"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cytVars", "=", 
+   RowBox[{"{", 
+    RowBox[{"cD", ",", "cB", ",", "cF"}], "}"}]}], ";"}]}], "Input",
+ CellLabel->"In[14]:=",ExpressionUUID->"96411ef7-d7f5-4e9c-a469-f0bbc362dafd"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"bulkDiffusionConstants", "=", 
+   RowBox[{"{", 
+    RowBox[{"DD", ",", "DB", ",", "DF"}], "}"}]}], ";"}]], "Input",
+ CellLabel->"In[16]:=",ExpressionUUID->"8331288e-38cc-4e21-b36e-18165ead7e1b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"totalDensities", "=", 
+   RowBox[{"{", 
+    RowBox[{"nD", ",", "nG", ",", "nB", ",", "nF"}], "}"}]}], ";"}]], "Input",
+ CellLabel->"In[17]:=",ExpressionUUID->"1783f121-2f78-48e6-ac5d-82d4e820be7a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"memReact", "=", 
+    RowBox[{
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"kbfD", " ", "mbf", " ", "cD"}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"kbfd", " ", "mbf"}], "+", 
+           RowBox[{"kfd", " ", "mf"}]}], ")"}], "md"}], "-", 
+        RowBox[{"ktg", " ", "mt", " ", "mg"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"kD", " ", "cD"}], "+", 
+        RowBox[{"ktD", " ", "mt", " ", "cD"}], "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"kbfd", " ", "mbf"}], "+", 
+           RowBox[{"kfd", " ", "mf"}]}], ")"}], "md"}], "+", 
+        RowBox[{"kgt", " ", "mtg"}], "-", 
+        RowBox[{"kdoff", " ", "md"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "ktg"}], " ", "mt", " ", "mg"}], "+", 
+        RowBox[{"kgt", " ", "mtg"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ktg", " ", "mt", " ", "mg"}], "-", 
+        RowBox[{"kgt", " ", "mtg"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ktB", " ", "mt", " ", "cB"}], "-", 
+        RowBox[{"kbF", " ", "mb", " ", "cF"}], "-", 
+        RowBox[{"kb", " ", "mb"}], "+", 
+        RowBox[{"kbf", " ", "mbf"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"kbF", " ", "mb", " ", "cF"}], "-", 
+        RowBox[{"kbf", " ", "mbf"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"kF", " ", "cF"}], "-", 
+        RowBox[{"kf", " ", "mf"}]}]}], "\[IndentingNewLine]", "}"}], "/.", 
+     RowBox[{"kbfd", "\[Rule]", 
+      RowBox[{"2", "kfd"}]}]}]}], ";"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"factor", " ", "2.0"}], ":", " ", 
+    RowBox[{
+    "hard", " ", "coded", " ", "GEF", " ", "enhancement", " ", "by", " ", 
+     "Bem1"}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cytCouple", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "kD"}], " ", "cD"}], "-", 
+      RowBox[{"ktD", " ", "mt", " ", "cD"}], "-", 
+      RowBox[{"kbfD", " ", "mbf", " ", "cD"}], "+", 
+      RowBox[{"kdoff", " ", "md"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "ktB"}], " ", "mt", " ", "cB"}], "+", 
+      RowBox[{"kb", " ", "mb"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "kbF"}], " ", "mb", " ", "cF"}], "-", 
+      RowBox[{"kF", " ", "cF"}], "+", 
+      RowBox[{"kf", " ", "mf"}], "+", 
+      RowBox[{"kbf", " ", "mbf"}]}]}], "\[IndentingNewLine]", "}"}]}], 
+  ";"}]}], "Input",
+ CellLabel->"In[18]:=",ExpressionUUID->"07d651a2-8824-49f0-b2b0-becb800567c6"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"kineticParamNames", "=", 
+  RowBox[{"DeleteDuplicates", "[", 
+   RowBox[{"DeleteCases", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"Join", "[", 
+        RowBox[{"memReact", ",", "cytCouple"}], "]"}], "/.", 
+       RowBox[{"s_Symbol", "\[RuleDelayed]", 
+        RowBox[{"List", "/;", 
+         RowBox[{"MemberQ", "[", 
+          RowBox[{
+           RowBox[{"Attributes", "[", "s", "]"}], ",", "NumericFunction"}], 
+          "]"}]}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Alternatives", "@@", 
+       RowBox[{"Join", "[", 
+        RowBox[{"memVars", ",", "cytVars"}], "]"}]}], "|", 
+      RowBox[{"_", "?", "NumericQ"}]}]}], "\[IndentingNewLine]", "]"}], 
+   "]"}]}]], "Input",
+ CellLabel->"In[20]:=",ExpressionUUID->"df32faa5-d016-4f73-9a1f-9ca651c97647"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "kbfD", ",", "kfd", ",", "ktg", ",", "kD", ",", "kdoff", ",", "ktD", ",", 
+   "kgt", ",", "kb", ",", "kbF", ",", "kbf", ",", "ktB", ",", "kF", ",", 
+   "kf"}], "}"}]], "Output",
+ CellLabel->"Out[20]=",ExpressionUUID->"7d252c05-21b9-4f04-9538-c317ba89edff"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"conservedDensitySums", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"mt", "+", "md", "+", "mtg", "+", "cD"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"mtg", "+", "mg"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"mb", "+", "mbf", "+", "cB"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"mf", "+", "mbf", "+", "cF"}]}], "\[IndentingNewLine]", "}"}]}], 
+  ";"}]], "Input",
+ CellLabel->"In[21]:=",ExpressionUUID->"6564e2dd-c755-4dc2-a178-4a03447dd25b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"conservedDensitySums", "/.", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"Thread", "[", 
+      RowBox[{"memVars", "\[Rule]", "memReact"}], "]"}], ",", 
+     RowBox[{"Thread", "[", 
+      RowBox[{"cytVars", "\[Rule]", "cytCouple"}], "]"}]}], "]"}]}], "//", 
+  "Simplify"}]], "Input",
+ CellLabel->"In[22]:=",ExpressionUUID->"d8ab92a4-a596-487c-b674-da8aab9a1702"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", "0", ",", "0", ",", "0"}], "}"}]], "Output",
+ CellLabel->"Out[22]=",ExpressionUUID->"01447512-6580-4793-993a-9a59af6a92d9"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sphereConservedSums", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"mt", "+", "md", "+", "mtg", "+", 
+      RowBox[{"cD", " ", 
+       RowBox[{"r", "/", "3"}]}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"mtg", "+", "mg"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"mb", "+", "mbf", "+", 
+      RowBox[{"cB", " ", 
+       RowBox[{"r", "/", "3"}]}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"mf", "+", "mbf", "+", 
+      RowBox[{"cF", " ", 
+       RowBox[{"r", "/", "3"}]}]}]}], "\[IndentingNewLine]", "}"}]}], 
+  ";"}]], "Input",
+ CellLabel->"In[23]:=",ExpressionUUID->"45c7a6b4-1b2b-4fd8-a562-1c782603ec91"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["1D line setup", "Subsection",ExpressionUUID->"bd341bda-af77-4a86-926f-d6cf41020006"],
+
+Cell[CellGroupData[{
+
+Cell["Equilibria setup", "Subsubsection",ExpressionUUID->"a78b9a91-58be-49b9-9509-f806dc3d7a3e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"nSolveUniformEq", "[", "params_", "]"}], ":=", 
+  RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeleteDuplicates", "[", 
+     RowBox[{
+      RowBox[{"Cases", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Chop", "@", 
+         RowBox[{"NSolve", "[", "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{
+            "Overdetermined", " ", "set", " ", "of", " ", "equations", " ", 
+             "is", " ", "more", " ", "robust", " ", "in", " ", "NSolve"}], 
+            " ", "..."}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Join", "[", 
+             RowBox[{"memReact", ",", "cytCouple", ",", 
+              RowBox[{"conservedDensitySums", "-", "totalDensities"}]}], 
+             "]"}], "/.", "params"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Join", "[", 
+            RowBox[{"memVars", ",", "cytVars"}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"HoldPattern", "[", 
+           RowBox[{"_", "\[Rule]", 
+            RowBox[{"(", 
+             RowBox[{"_", "?", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Im", "@", "#"}], "\[Equal]", "0"}], "&&", 
+                 RowBox[{"#", "\[GreaterEqual]", "0"}]}], "&"}], ")"}]}], 
+             ")"}]}], "]"}], ".."}], "}"}]}], "\[IndentingNewLine]", "]"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Norm", "[", 
+         RowBox[{
+          RowBox[{"#1", "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "2"}], "]"}], "]"}], "-", 
+          RowBox[{"#2", "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], "<", 
+        RowBox[{"10", "^", 
+         RowBox[{"-", "5"}]}]}], "&"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", "First"}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellLabel->"In[21]:=",ExpressionUUID->"c3dd903c-619f-453c-812d-60f932f20d74"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"testParams", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"nD", "\[Rule]", "70"}], ",", 
+     RowBox[{"nG", "\[Rule]", "30"}], ",", 
+     RowBox[{"nF", "\[Rule]", "20"}], ",", 
+     RowBox[{"nB", "\[Rule]", "20"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"DD", "\[Rule]", "10"}], ",", 
+     RowBox[{"DG", "\[Rule]", "0.01"}], ",", 
+     RowBox[{"DF", "\[Rule]", "10"}], ",", 
+     RowBox[{"DB", "\[Rule]", "10"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Dm", "[", "_", "]"}], "\[Rule]", "0.01"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"kD", "\[Rule]", "0.1"}], ",", 
+     RowBox[{"kbfD", "\[Rule]", "0.2"}], ",", 
+     RowBox[{"kbfd", "\[Rule]", "0.2"}], ",", 
+     RowBox[{"kfd", "\[Rule]", "0.1"}], ",", 
+     RowBox[{"kdoff", "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"ktD", "\[Rule]", "0.1"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"ktg", "\[Rule]", "0.04"}], ",", 
+     RowBox[{"kgt", "\[Rule]", "0.5"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"ktB", "\[Rule]", "0.2"}], ",", 
+     RowBox[{"kb", "\[Rule]", "0.5"}], ",", 
+     RowBox[{"kbF", "\[Rule]", "0.01"}], ",", 
+     RowBox[{"kbf", "\[Rule]", "0.5"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"kF", "\[Rule]", "0.1"}], ",", 
+     RowBox[{"kf", "\[Rule]", "1"}]}], "\[IndentingNewLine]", "}"}]}], 
+  ";"}]], "Input",
+ CellLabel->"In[22]:=",ExpressionUUID->"909d7662-6914-4050-9022-c9c362b26678"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"testEq", "=", 
+  RowBox[{"Last", "@", 
+   RowBox[{"nSolveUniformEq", "[", "testParams", "]"}]}]}]], "Input",
+ CellLabel->"In[23]:=",ExpressionUUID->"bb0df20d-f339-43fc-993e-37c07bdf79c9"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"mt", "\[Rule]", "36.14162489067653`"}], ",", 
+   RowBox[{"md", "\[Rule]", "9.48729742506144`"}], ",", 
+   RowBox[{"mg", "\[Rule]", "7.709446401998742`"}], ",", 
+   RowBox[{"mtg", "\[Rule]", "22.29055359800126`"}], ",", 
+   RowBox[{"mb", "\[Rule]", "14.750245211734587`"}], ",", 
+   RowBox[{"mbf", "\[Rule]", "4.229446123655316`"}], ",", 
+   RowBox[{"mf", "\[Rule]", "1.433686716031335`"}], ",", 
+   RowBox[{"cD", "\[Rule]", "2.0805240862607692`"}], ",", 
+   RowBox[{"cB", "\[Rule]", "1.0203086646100976`"}], ",", 
+   RowBox[{"cF", "\[Rule]", "14.336867160313352`"}]}], "}"}]], "Output",
+ CellLabel->"Out[23]=",ExpressionUUID->"93320ef4-bc8d-4742-80eb-646289f86acd"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Linear stability setup", "Subsubsection",ExpressionUUID->"8f89be26-a1ca-4c14-a63c-f39c437dbf1b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"lineJacobian", "=", 
+   RowBox[{"ArrayFlatten", "[", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"memReact", ",", 
+           RowBox[{"{", "memVars", "}"}]}], "]"}], "-", 
+         RowBox[{
+          RowBox[{"q", "^", "2"}], " ", 
+          RowBox[{"DiagonalMatrix", "@", 
+           RowBox[{"Thread", "[", 
+            RowBox[{"Dm", "[", 
+             RowBox[{"ToString", "/@", "memVars"}], "]"}], "]"}]}]}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"D", "[", 
+         RowBox[{"memReact", ",", 
+          RowBox[{"{", "cytVars", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"D", "[", 
+         RowBox[{"cytCouple", ",", 
+          RowBox[{"{", "memVars", "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"cytCouple", ",", 
+           RowBox[{"{", "cytVars", "}"}]}], "]"}], "-", 
+         RowBox[{"DiagonalMatrix", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "DD"}], ",", 
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "DG"}], ",", 
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "DB"}], ",", 
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "DF"}]}], "}"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+  ";"}]], "Input",
+ CellLabel->
+  "In[460]:=",ExpressionUUID->"c39cca54-15ce-40b6-8b49-90995ba360e3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"findDispRel", "[", 
+   RowBox[{"params_", ",", "eq_", ",", 
+    RowBox[{"qMax_:", "10"}], ",", 
+    RowBox[{"nSamples_:", "20"}]}], "]"}], ":=", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{"J", "=", 
+      RowBox[{
+       RowBox[{"lineJacobian", "/.", "eq"}], "/.", "params"}]}], 
+     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"k", ",", 
+        RowBox[{"First", "@", 
+         RowBox[{"MaximalBy", "[", 
+          RowBox[{
+           RowBox[{"Eigenvalues", "[", 
+            RowBox[{"J", "/.", 
+             RowBox[{"q", "\[Rule]", "k"}]}], "]"}], ",", "Re"}], "]"}]}]}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "0", ",", "qMax", ",", 
+        RowBox[{"qMax", "/", "nSamples"}]}], "}"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellLabel->
+  "In[461]:=",ExpressionUUID->"1d5ed2be-5d00-47d7-9b48-f055b2b3df5f"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1056, 1189},
+WindowMargins->{{599, Automatic}, {46, Automatic}},
+TrackCellChangeTimes->False,
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"PTMono14.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 117, 0, 50, "Text",ExpressionUUID->"c3ff2945-6054-4ca4-8207-12d6b13aafe9"],
+Cell[CellGroupData[{
+Cell[700, 24, 92, 0, 53, "Subsection",ExpressionUUID->"4f092f08-acfc-4f05-8670-07d0c26491ef"],
+Cell[795, 26, 409, 11, 53, "Input",ExpressionUUID->"96411ef7-d7f5-4e9c-a469-f0bbc362dafd"],
+Cell[1207, 39, 229, 5, 30, "Input",ExpressionUUID->"8331288e-38cc-4e21-b36e-18165ead7e1b"],
+Cell[1439, 46, 232, 5, 30, "Input",ExpressionUUID->"1783f121-2f78-48e6-ac5d-82d4e820be7a"],
+Cell[1674, 53, 2769, 72, 317, "Input",ExpressionUUID->"07d651a2-8824-49f0-b2b0-becb800567c6"],
+Cell[CellGroupData[{
+Cell[4468, 129, 898, 22, 120, "Input",ExpressionUUID->"df32faa5-d016-4f73-9a1f-9ca651c97647"],
+Cell[5369, 153, 298, 6, 34, "Output",ExpressionUUID->"7d252c05-21b9-4f04-9538-c317ba89edff"]
+}, Open  ]],
+Cell[5682, 162, 518, 11, 141, "Input",ExpressionUUID->"6564e2dd-c755-4dc2-a178-4a03447dd25b"],
+Cell[CellGroupData[{
+Cell[6225, 177, 404, 10, 30, "Input",ExpressionUUID->"d8ab92a4-a596-487c-b674-da8aab9a1702"],
+Cell[6632, 189, 172, 3, 34, "Output",ExpressionUUID->"01447512-6580-4793-993a-9a59af6a92d9"]
+}, Open  ]],
+Cell[6819, 195, 676, 16, 141, "Input",ExpressionUUID->"45c7a6b4-1b2b-4fd8-a562-1c782603ec91"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7532, 216, 90, 0, 53, "Subsection",ExpressionUUID->"bd341bda-af77-4a86-926f-d6cf41020006"],
+Cell[CellGroupData[{
+Cell[7647, 220, 96, 0, 44, "Subsubsection",ExpressionUUID->"a78b9a91-58be-49b9-9509-f806dc3d7a3e"],
+Cell[7746, 222, 2184, 53, 295, "Input",ExpressionUUID->"c3dd903c-619f-453c-812d-60f932f20d74"],
+Cell[9933, 277, 1474, 31, 229, "Input",ExpressionUUID->"909d7662-6914-4050-9022-c9c362b26678"],
+Cell[CellGroupData[{
+Cell[11432, 312, 211, 4, 30, "Input",ExpressionUUID->"bb0df20d-f339-43fc-993e-37c07bdf79c9"],
+Cell[11646, 318, 717, 13, 57, "Output",ExpressionUUID->"93320ef4-bc8d-4742-80eb-646289f86acd"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12412, 337, 102, 0, 44, "Subsubsection",ExpressionUUID->"8f89be26-a1ca-4c14-a63c-f39c437dbf1b"],
+Cell[12517, 339, 1712, 46, 229, "Input",ExpressionUUID->"c39cca54-15ce-40b6-8b49-90995ba360e3"],
+Cell[14232, 387, 1101, 29, 185, "Input",ExpressionUUID->"1d5ed2be-5d00-47d7-9b48-f055b2b3df5f"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
